@@ -35,9 +35,16 @@ text
 EOF
 
 # Install Hugo
-HUGO_VERSION=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq -r '.tag_name')
+HUGO_EDITION='hugo_extended'
+if [ -z "$HUGO_VERSION" ]; then
+  # https://github.com/gohugoio/hugo/releases/tag/v0.137.0
+  # Note that we have no longer build the deploy feature in the standard and extended archives. If you need that,
+  # download archives with withdeploy in the filename.
+  HUGO_VERSION=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq -r '.tag_name')
+  HUGO_EDITION='hugo_extended_withdeploy'
+fi
 mkdir tmp/ && cd tmp/
-curl -sSL https://github.com/gohugoio/hugo/releases/download/${HUGO_VERSION}/hugo_extended_${HUGO_VERSION:1}_Linux-64bit.tar.gz | tar -xvzf-
+curl -sSL https://github.com/gohugoio/hugo/releases/download/${HUGO_VERSION}/${HUGO_EDITION}_${HUGO_VERSION:1}_Linux-64bit.tar.gz | tar -xvzf-
 mv hugo /usr/local/bin/
 cd .. && rm -rf tmp/
 cd ${GITHUB_WORKSPACE}
