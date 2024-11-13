@@ -44,18 +44,18 @@ fi
 
 # Compare versions against specific version that requires a different binary
 HUGO_MINIMUM_VERSION_WITHDEPLOY="0.137.0"
-HIGHER_HUGO_VERSION=$(lastversion "${HUGO_MINIMUM_VERSION_WITHDEPLOY}" -gt "${HUGO_VERSION}")
+HIGHER_HUGO_VERSION=$(semver "${HUGO_VERSION}" -r ">=${HUGO_MINIMUM_VERSION_WITHDEPLOY}")
 
 if [ $? -eq 0 ]; then
-  # HUGO_VERSION is lower than the HUGO_MINIMUM_VERSION_WITHDEPLOY
-  HUGO_EDITION='hugo_extended'
-  # Trick to get just the digits-only version. lastversion returns the higher digits-only version. Exit code will be 0.
-  HUGO_VERSION=$(lastversion "${HUGO_VERSION}" -gt "0.0.0")
-else
   # HUGO_VERSION is the same or higher than the HUGO_MINIMUM_VERSION_WITHDEPLOY
   HUGO_EDITION='hugo_extended_withdeploy'
   # HIGHER_HUGO_VERSION contains the digits-only version of the higher version
   HUGO_VERSION="${HIGHER_HUGO_VERSION}"
+else
+  # HUGO_VERSION is lower than the HUGO_MINIMUM_VERSION_WITHDEPLOY
+  HUGO_EDITION='hugo_extended'
+  # Trick to get just the digits-only version. Exit code will be 0.
+  HUGO_VERSION=$(semver "${HUGO_VERSION}")
 fi
 
 mkdir tmp/ && cd tmp/
