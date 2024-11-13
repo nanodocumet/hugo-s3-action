@@ -42,7 +42,7 @@ AWS_REGION | Yes | AWS region
 AWS_ACCESS_KEY_ID | Yes | Access key with permissions to execute your deployment
 AWS_SECRET_ACCESS_KEY | Yes | Secret key
 MINIFY | No | Applies asset minification
-HUGO_VERSION | No | Installs the provided version of Hugo (requires the leading `v` char). If not passed it will install the latest version
+HUGO_VERSION | No | Installs the provided version of Hugo. If not passed it will install the latest version. The leading `v` is optional.
 
 Information about how to configure a deployment to S3 in Hugo can be found here https://gohugo.io/hosting-and-deployment/hugo-deploy/.
 
