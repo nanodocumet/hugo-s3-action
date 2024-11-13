@@ -72,7 +72,7 @@ else
 fi
 
 # Deploy as configured in your repo
-hugo deploy
+hugo deploy --maxDeletes -1
 
 # Clear out credentials after we're done
 # We need to re-run `aws configure` with bogus input instead of
