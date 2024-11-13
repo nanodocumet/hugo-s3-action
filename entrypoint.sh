@@ -43,7 +43,7 @@ if [ -z "$HUGO_VERSION" ]; then
 fi
 
 # Removing the 'v' prefix if present
-$HUGO_VERSION="${HUGO_VERSION#v}"
+HUGO_VERSION="${HUGO_VERSION#v}"
 
 # Compare versions against specific version that requires a different binary
 HUGO_MINIMUM_VERSION_WITHDEPLOY="0.137.0"
