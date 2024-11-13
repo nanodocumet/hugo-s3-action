@@ -1,10 +1,7 @@
 FROM pahud/awscli-v2:node-lts
 
-RUN node -v && npm -v
-
 RUN yum update -y && \
-    yum install -y curl jq && \
-    npm install semver
+    yum install -y curl jq
 
 COPY entrypoint.sh /
 

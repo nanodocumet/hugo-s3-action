@@ -42,20 +42,19 @@ if [ -z "$HUGO_VERSION" ]; then
   HUGO_VERSION=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq -r '.tag_name')
 fi
 
+# Removing the 'v' prefix if present
+$HUGO_VERSION="${$HUGO_VERSION#v}"
+
 # Compare versions against specific version that requires a different binary
 HUGO_MINIMUM_VERSION_WITHDEPLOY="0.137.0"
-HIGHER_HUGO_VERSION=$(semver "${HUGO_VERSION}" -r ">=${HUGO_MINIMUM_VERSION_WITHDEPLOY}")
+HIGHER_HUGO_VERSION=$(echo "${HUGO_VERSION}" "${HUGO_MINIMUM_VERSION_WITHDEPLOY}" | tr " " "\n" | sort -rV | head -n 1)
 
-if [ $? -eq 0 ]; then
+if [ "$HIGHER_HUGO_VERSION" ==  "$HUGO_VERSION" ]; then
   # HUGO_VERSION is the same or higher than the HUGO_MINIMUM_VERSION_WITHDEPLOY
   HUGO_EDITION='hugo_extended_withdeploy'
-  # HIGHER_HUGO_VERSION contains the digits-only version of the higher version
-  HUGO_VERSION="${HIGHER_HUGO_VERSION}"
 else
   # HUGO_VERSION is lower than the HUGO_MINIMUM_VERSION_WITHDEPLOY
   HUGO_EDITION='hugo_extended'
-  # Trick to get just the digits-only version. Exit code will be 0.
-  HUGO_VERSION=$(semver "${HUGO_VERSION}")
 fi
 
 mkdir tmp/ && cd tmp/
