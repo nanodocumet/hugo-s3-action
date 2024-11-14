@@ -35,7 +35,8 @@ text
 EOF
 
 # Install Hugo
-if [ -z "$HUGO_VERSION" ]; then
+if [ -z "$HUGO_VERSION" ] || [ "latest" = "$HUGO_VERSION" ]; then
+  # Getting the latest Hugo version when HUGO_VERSION is not set or passed with value of "latest"
   # https://github.com/gohugoio/hugo/releases/tag/v0.137.0
   # Note that we have no longer build the deploy feature in the standard and extended archives. If you need that,
   # download archives with withdeploy in the filename.
@@ -72,7 +73,7 @@ else
 fi
 
 # Deploy as configured in your repo
-hugo deploy --maxDeletes -1
+hugo deploy
 
 # Clear out credentials after we're done
 # We need to re-run `aws configure` with bogus input instead of
